@@ -1,6 +1,8 @@
 package pw.masy.gutils.buffer;
 
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.function.Consumer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -1273,6 +1275,19 @@ public class AdvancedByteBuffer {
 	 */
 	public int getCapacity() {
 		return this.data.length;
+	}
+
+	/**
+	 * Performs the given action on each byte in the {@link AdvancedByteBuffer}.
+	 *
+	 * @param action the action to be performed for each byte
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 */
+	public AdvancedByteBuffer forEach(Consumer<? super Byte> action) {
+		for (int n = 0; n < this.limit; n++) {
+			action.accept(this.data[n]);
+		}
+		return this;
 	}
 
 	/**
