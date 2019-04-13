@@ -1102,7 +1102,7 @@ public class AdvancedByteBuffer {
 	}
 
 	/**
-	 * Reads a char array from the buffer and writes into the given array.
+	 * Reads a char array from the buffer and writes it into the given array.
 	 *
 	 * @param array the char array the values will be written to.
 	 * @return the read char array
