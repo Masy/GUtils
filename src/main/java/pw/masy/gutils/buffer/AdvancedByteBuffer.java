@@ -1,5 +1,6 @@
 package pw.masy.gutils.buffer;
 
+import java.nio.ByteBuffer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,8 @@ public class AdvancedByteBuffer {
 	@Getter private byte[] data;
 	@Getter private int position;
 	@Getter @Setter private int threshold;
+	@Getter private int limit;
+	@Getter private final int initialCapacity;
 
 	/**
 	 * Constructs a new advanced byte buffer with the capacity 0 and threshold 16.
@@ -36,6 +39,8 @@ public class AdvancedByteBuffer {
 	 */
 	public AdvancedByteBuffer(int capacity, int threshold) {
 		this.data = new byte[capacity];
+		this.initialCapacity = capacity;
+		this.limit = capacity;
 		this.threshold = threshold;
 	}
 
@@ -56,6 +61,8 @@ public class AdvancedByteBuffer {
 	 */
 	public AdvancedByteBuffer(byte[] data, int threshold) {
 		this.data = data;
+		this.initialCapacity = data.length;
+		this.limit = data.length;
 		this.threshold = threshold;
 	}
 
@@ -776,9 +783,17 @@ public class AdvancedByteBuffer {
 	}
 
 	/**
-	 * Resizes the {@link #data} array to the current number of stored values and resets the position back to 0.
+	 * Sets the limit of the buffer to the current position and the reading position back to 0.
 	 */
 	public void flip() {
+		this.limit = this.position;
+		this.position = 0;
+	}
+
+	/**
+	 * Resizes the {@link #data} array to the current number of stored values and resets the position back to 0.
+	 */
+	public void shrink() {
 		if (this.position != this.data.length) {
 			byte[] newData = new byte[this.position];
 			System.arraycopy(this.data, 0, newData, 0, this.position);
@@ -1189,7 +1204,8 @@ public class AdvancedByteBuffer {
 	public void ensureSpace(int bytesNeeded) {
 		if (this.position + bytesNeeded >= this.data.length) {
 			byte[] newData = new byte[this.data.length + (bytesNeeded < this.threshold ? this.threshold : bytesNeeded)];
-			System.arraycopy(this.data, 0, newData, 0, this.data.length);
+			this.limit = this.data.length;
+			System.arraycopy(this.data, 0, newData, 0, this.limit);
 			this.data = newData;
 		}
 	}
