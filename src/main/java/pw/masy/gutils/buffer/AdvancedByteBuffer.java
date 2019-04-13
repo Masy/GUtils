@@ -1,5 +1,6 @@
 package pw.masy.gutils.buffer;
 
+import java.nio.charset.Charset;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.Setter;
@@ -193,6 +194,125 @@ public class AdvancedByteBuffer {
 		this.ensureSpace(4);
 		this.writeInt(end - start + 1);
 		return this.writeByteArrayRaw(data, start, end);
+	}
+
+	/**
+	 * Writes a char into the buffer.
+	 *
+	 * @param data the char that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #ensureSpace(int)
+	 */
+	public AdvancedByteBuffer writeChar(char data) {
+		this.ensureSpace(1);
+		this.data[this.position++] = (byte) data;
+		return this;
+	}
+
+	/**
+	 * Writes a char into the buffer at the given position.
+	 *
+	 * @param data     the char that will be written
+	 * @param position the position where the byte will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @throws IllegalArgumentException when the position is either smaller as 0 or greater than the capacity of the buffer.
+	 * @see #validatePosition(int)
+	 */
+	public AdvancedByteBuffer writeChar(char data, int position) {
+		if (!this.validatePosition(position))
+			throw new IllegalArgumentException("Tried writing char to AdvancedByteBuffer at invalid position.");
+
+		this.data[position] = (byte) data;
+		return this;
+	}
+
+	/**
+	 * Writes a char array into the buffer.
+	 *
+	 * @param data the char array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #ensureSpace(int)
+	 */
+	public AdvancedByteBuffer writeCharArrayRaw(char[] data) {
+		this.ensureSpace(data.length);
+		for (int n = 0; n < data.length; n++) {
+			this.data[this.position++] = (byte) data[n];
+		}
+		return this;
+	}
+
+	/**
+	 * Writes the specified content of the char array into the buffer.<br>
+	 * The chars from <code>start</code> to inclusively <code>end</code> will be written.
+	 *
+	 * @param data  the char array of which the specified content will be written
+	 * @param start the inclusive start index
+	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #ensureSpace(int)
+	 */
+	public AdvancedByteBuffer writeCharArrayRaw(char[] data, int start, int end) {
+		this.ensureSpace(end - start + 1);
+		for (int n = start; n <= end; n++) {
+			this.data[this.position++] = (byte) data[n];
+		}
+		return this;
+	}
+
+	/**
+	 * Writes the length and the char array itself into the buffer.
+	 *
+	 * @param data the char array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #ensureSpace(int)
+	 * @see #writeInt(int)
+	 * @see #writeCharArrayRaw(char[])
+	 */
+	public AdvancedByteBuffer writeCharArray(char[] data) {
+		this.ensureSpace(4);
+		this.writeInt(data.length);
+		return this.writeCharArrayRaw(data);
+	}
+
+	/**
+	 * Writes the length and the specified content of the char array into the buffer.<br>
+	 * The bytes from <code>start</code> to inclusively <code>end</code> will be written.
+	 *
+	 * @param data  the char array of which the specified content will be written
+	 * @param start the inclusive start index
+	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #ensureSpace(int)
+	 * @see #writeInt(int)
+	 * @see #writeCharArrayRaw(char[], int, int)
+	 */
+	public AdvancedByteBuffer writeCharArray(char[] data, int start, int end) {
+		this.ensureSpace(4);
+		this.writeInt(end - start + 1);
+		return this.writeCharArrayRaw(data, start, end);
+	}
+
+	/**
+	 * Writes the given string with the given charset into the buffer.
+	 *
+	 * @param value the string that will be written
+	 * @param charset the charset that will be used to convert the string to bytes
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 */
+	public AdvancedByteBuffer writeString(String value, Charset charset) {
+		byte[] bytes = value.getBytes(charset);
+		this.ensureSpace(bytes.length);
+		return this.writeByteArray(bytes);
+	}
+
+	/**
+	 * Writes the given string with the UTF-8 charset into the buffer.
+	 *
+	 * @param value the string that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 */
+	public AdvancedByteBuffer writeString(String value) {
+		return this.writeString(value, Charset.forName("UTF-8"));
 	}
 
 	/**
@@ -940,6 +1060,81 @@ public class AdvancedByteBuffer {
 			array[n] = this.readByte();
 		}
 		return array;
+	}
+
+	/**
+	 * Reads a char from the buffer.
+	 *
+	 * @return the read char
+	 */
+	public char readChar() {
+		return (char) this.data[this.position++];
+	}
+
+	/**
+	 * Reads a char array from the buffer.<br>
+	 * This method assumes the next value will be the size of the array.
+	 *
+	 * @return the read char array
+	 * @see #readChar()
+	 */
+	public char[] readCharArray() {
+		char[] array = new char[this.readInt()];
+		for (int n = 0; n < array.length; n++) {
+			array[n] = this.readChar();
+		}
+		return array;
+	}
+
+	/**
+	 * Reads a char array with the given length from the buffer.
+	 *
+	 * @param length the length of the char array
+	 * @return the read char array
+	 * @see #readChar()
+	 */
+	public char[] readCharArray(int length) {
+		char[] array = new char[length];
+		for (int n = 0; n < length; n++) {
+			array[n] = this.readChar();
+		}
+		return array;
+	}
+
+	/**
+	 * Reads a char array from the buffer and writes into the given array.
+	 *
+	 * @param array the char array the values will be written to.
+	 * @return the read char array
+	 * @see #readChar()
+	 */
+	public char[] readCharArray(char[] array) {
+		for (int n = 0; n < array.length; n++) {
+			array[n] = this.readChar();
+		}
+		return array;
+	}
+
+	/**
+	 * Reads a string with the given charset from the buffer.
+	 *
+	 * @param charset the charset that will be used to convert the bytes into a string
+	 * @return the read string
+	 * @see #readByteArray()
+	 */
+	public String readString(Charset charset) {
+		byte[] bytes = this.readByteArray();
+		return new String(bytes, charset);
+	}
+
+	/**
+	 * Reads a string with the UTF-8 charset from the buffer.
+	 *
+	 * @return the read string
+	 * @see #readString(Charset)
+	 */
+	public String readString() {
+		return this.readString(Charset.forName("UTF-8"));
 	}
 
 	/**
