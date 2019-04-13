@@ -1,6 +1,7 @@
 package pw.masy.gutils.buffer;
 
 import java.nio.ByteBuffer;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -67,37 +68,32 @@ public class AdvancedByteBuffer {
 	}
 
 	/**
-	 * Gets the capacity of the byte buffer.
-	 *
-	 * @return the capacity of the byte buffer
-	 */
-	public int getCapacity() {
-		return this.data.length;
-	}
-
-	/**
 	 * Sets the position for the next operation to the given position.
 	 *
 	 * @param position the new position
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @throws IllegalArgumentException when the position is either smaller as 0 or greater than the capacity of the buffer
 	 * @see #validatePosition(int)
 	 */
-	public void seek(int position) {
+	public AdvancedByteBuffer seek(int position) {
 		if (!this.validatePosition(position))
 			throw new IllegalArgumentException("Tried setting position of AdvancedByteBuffer to invalid value.");
 
 		this.position = position;
+		return this;
 	}
 
 	/**
 	 * Writes a byte into the buffer.
 	 *
-	 * @param data the byte that will be written.
+	 * @param data the byte that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeByte(int data) {
+	public AdvancedByteBuffer writeByte(int data) {
 		this.ensureSpace(1);
 		this.data[this.position++] = (byte) data;
+		return this;
 	}
 
 	/**
@@ -105,27 +101,31 @@ public class AdvancedByteBuffer {
 	 *
 	 * @param data     the byte that will be written
 	 * @param position the position where the byte will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @throws IllegalArgumentException when the position is either smaller as 0 or greater than the capacity of the buffer.
 	 * @see #validatePosition(int)
 	 */
-	public void writeByte(int data, int position) {
+	public AdvancedByteBuffer writeByte(int data, int position) {
 		if (!this.validatePosition(position))
 			throw new IllegalArgumentException("Tried writing byte to AdvancedByteBuffer at invalid position.");
 
 		this.data[position] = (byte) data;
+		return this;
 	}
 
 	/**
 	 * Writes a byte array into the buffer.
 	 *
 	 * @param data the byte array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeByteArrayRaw(byte[] data) {
+	public AdvancedByteBuffer writeByteArrayRaw(byte[] data) {
 		this.ensureSpace(data.length);
 		for (int n = 0; n < data.length; n++) {
 			this.data[this.position++] = data[n];
 		}
+		return this;
 	}
 
 	/**
@@ -135,27 +135,30 @@ public class AdvancedByteBuffer {
 	 * @param data  the byte array of which the specified content will be written
 	 * @param start the inclusive start index
 	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeByteArrayRaw(byte[] data, int start, int end) {
+	public AdvancedByteBuffer writeByteArrayRaw(byte[] data, int start, int end) {
 		this.ensureSpace(end - start + 1);
 		for (int n = start; n <= end; n++) {
 			this.data[this.position++] = data[n];
 		}
+		return this;
 	}
 
 	/**
 	 * Writes the length and the byte array itself into the buffer.
 	 *
 	 * @param data the byte array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 * @see #writeInt(int)
 	 * @see #writeByteArrayRaw(byte[])
 	 */
-	public void writeByteArray(byte[] data) {
+	public AdvancedByteBuffer writeByteArray(byte[] data) {
 		this.ensureSpace(4);
 		this.writeInt(data.length);
-		this.writeByteArrayRaw(data);
+		return this.writeByteArrayRaw(data);
 	}
 
 	/**
@@ -165,25 +168,28 @@ public class AdvancedByteBuffer {
 	 * @param data  the byte array of which the specified content will be written
 	 * @param start the inclusive start index
 	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 * @see #writeInt(int)
 	 * @see #writeByteArrayRaw(byte[], int, int)
 	 */
-	public void writeByteArray(byte[] data, int start, int end) {
+	public AdvancedByteBuffer writeByteArray(byte[] data, int start, int end) {
 		this.ensureSpace(4);
 		this.writeInt(end - start + 1);
-		this.writeByteArrayRaw(data, start, end);
+		return this.writeByteArrayRaw(data, start, end);
 	}
 
 	/**
 	 * Writes a boolean into the buffer.
 	 *
 	 * @param data the boolean that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeBoolean(boolean data) {
+	public AdvancedByteBuffer writeBoolean(boolean data) {
 		this.ensureSpace(1);
 		this.data[this.position++] = data ? (byte) 1 : 0;
+		return this;
 	}
 
 	/**
@@ -191,27 +197,31 @@ public class AdvancedByteBuffer {
 	 *
 	 * @param data     the boolean that will be written
 	 * @param position the position where the boolean will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @throws IllegalArgumentException when the position is either smaller as 0 or greater than the capacity of the buffer
 	 * @see #validatePosition(int)
 	 */
-	public void writeBoolean(boolean data, int position) {
+	public AdvancedByteBuffer writeBoolean(boolean data, int position) {
 		if (!this.validatePosition(position))
 			throw new IllegalArgumentException("Tried writing boolean to AdvancedByteBuffer at invalid position.");
 
 		this.data[position] = data ? (byte) 1 : 0;
+		return this;
 	}
 
 	/**
 	 * Writes a boolean array into the buffer.
 	 *
 	 * @param data the boolean array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeBooleanArrayRaw(boolean[] data) {
+	public AdvancedByteBuffer writeBooleanArrayRaw(boolean[] data) {
 		this.ensureSpace(data.length);
 		for (int n = 0; n < data.length; n++) {
 			this.data[this.position++] = data[n] ? (byte) 1 : 0;
 		}
+		return this;
 	}
 
 	/**
@@ -221,27 +231,30 @@ public class AdvancedByteBuffer {
 	 * @param data  the boolean array of which the specified content will be written
 	 * @param start the inclusive start index
 	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeBooleanArrayRaw(boolean[] data, int start, int end) {
+	public AdvancedByteBuffer writeBooleanArrayRaw(boolean[] data, int start, int end) {
 		this.ensureSpace((end - start + 1));
 		for (int n = start; n <= end; n++) {
 			this.data[this.position++] = data[n] ? (byte) 1 : 0;
 		}
+		return this;
 	}
 
 	/**
 	 * Writes the length and the boolean array itself into the buffer.
 	 *
 	 * @param data the boolean array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 * @see #writeInt(int)
 	 * @see #writeBooleanArrayRaw(boolean[])
 	 */
-	public void writeBooleanArray(boolean[] data) {
+	public AdvancedByteBuffer writeBooleanArray(boolean[] data) {
 		this.ensureSpace(4);
 		this.writeInt(data.length);
-		this.writeBooleanArrayRaw(data);
+		return this.writeBooleanArrayRaw(data);
 	}
 
 	/**
@@ -251,26 +264,29 @@ public class AdvancedByteBuffer {
 	 * @param data  the byte array of which the specified content will be written
 	 * @param start the inclusive start index
 	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 * @see #writeInt(int)
 	 * @see #writeBooleanArrayRaw(boolean[], int, int)
 	 */
-	public void writeBooleanArray(boolean[] data, int start, int end) {
+	public AdvancedByteBuffer writeBooleanArray(boolean[] data, int start, int end) {
 		this.ensureSpace(4);
 		this.writeInt(end - start + 1);
-		this.writeBooleanArrayRaw(data, start, end);
+		return this.writeBooleanArrayRaw(data, start, end);
 	}
 
 	/**
 	 * Writes a short into the buffer.
 	 *
 	 * @param data the short that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeShort(short data) {
+	public AdvancedByteBuffer writeShort(short data) {
 		this.ensureSpace(2);
 		this.data[this.position++] = (byte) (data >> 8);
 		this.data[this.position++] = (byte) (data & 0xFF);
+		return this;
 	}
 
 	/**
@@ -278,29 +294,33 @@ public class AdvancedByteBuffer {
 	 *
 	 * @param data     the short that will be written
 	 * @param position the position where the short will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @throws IllegalArgumentException when the position is either smaller as 0 or greater than the capacity of the buffer
 	 * @see #validateArea(int, int)
 	 */
-	public void writeShort(short data, int position) {
+	public AdvancedByteBuffer writeShort(short data, int position) {
 		if (!this.validateArea(position, 2))
 			throw new IllegalArgumentException("Tried writing short to AdvancedByteBuffer at invalid position.");
 
 		this.data[position] = (byte) (data >> 8);
 		this.data[position + 1] = (byte) (data & 0xFF);
+		return this;
 	}
 
 	/**
 	 * Writes a short array into the buffer.
 	 *
 	 * @param data the short array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeShortArrayRaw(short[] data) {
+	public AdvancedByteBuffer writeShortArrayRaw(short[] data) {
 		this.ensureSpace(data.length * 2);
 		for (int n = 0; n < data.length; n++) {
 			this.data[this.position++] = (byte) (data[n] >> 8);
 			this.data[this.position++] = (byte) (data[n] & 0xFF);
 		}
+		return this;
 	}
 
 	/**
@@ -310,28 +330,31 @@ public class AdvancedByteBuffer {
 	 * @param data  the short array of which the specified content will be written
 	 * @param start the inclusive start index
 	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeShortArrayRaw(short[] data, int start, int end) {
+	public AdvancedByteBuffer writeShortArrayRaw(short[] data, int start, int end) {
 		this.ensureSpace((end - start + 1) * 2);
 		for (int n = start; n <= end; n++) {
 			this.data[this.position++] = (byte) (data[n] >> 8);
 			this.data[this.position++] = (byte) (data[n] & 0xFF);
 		}
+		return this;
 	}
 
 	/**
 	 * Writes the length and the short array itself into the buffer.
 	 *
 	 * @param data the short array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 * @see #writeInt(int)
 	 * @see #writeShortArrayRaw(short[])
 	 */
-	public void writeShortArray(short[] data) {
+	public AdvancedByteBuffer writeShortArray(short[] data) {
 		this.ensureSpace(4);
 		this.writeInt(data.length);
-		this.writeShortArrayRaw(data);
+		return this.writeShortArrayRaw(data);
 	}
 
 	/**
@@ -341,28 +364,31 @@ public class AdvancedByteBuffer {
 	 * @param data  the short array of which the specified content will be written
 	 * @param start the inclusive start index
 	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 * @see #writeInt(int)
 	 * @see #writeShortArrayRaw(short[], int, int)
 	 */
-	public void writeShortArray(short[] data, int start, int end) {
+	public AdvancedByteBuffer writeShortArray(short[] data, int start, int end) {
 		this.ensureSpace(4);
 		this.writeInt(end - start + 1);
-		this.writeShortArrayRaw(data, start, end);
+		return this.writeShortArrayRaw(data, start, end);
 	}
 
 	/**
 	 * Writes an int into the buffer.
 	 *
 	 * @param data the int that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeInt(int data) {
+	public AdvancedByteBuffer writeInt(int data) {
 		this.ensureSpace(4);
 		this.data[this.position++] = (byte) (data >> 24);
 		this.data[this.position++] = (byte) ((data >> 16) & 0xFF);
 		this.data[this.position++] = (byte) ((data >> 8) & 0xFF);
 		this.data[this.position++] = (byte) (data & 0xFF);
+		return this;
 	}
 
 	/**
@@ -370,10 +396,11 @@ public class AdvancedByteBuffer {
 	 *
 	 * @param data     the int that will be written
 	 * @param position the position where the int will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @throws IllegalArgumentException when the position is either smaller as 0 or greater than the capacity of the buffer
 	 * @see #validatePosition(int)
 	 */
-	public void writeInt(int data, int position) {
+	public AdvancedByteBuffer writeInt(int data, int position) {
 		if (!this.validateArea(position, 4))
 			throw new IllegalArgumentException("Tried writing int to AdvancedByteBuffer at invalid position.");
 
@@ -381,15 +408,17 @@ public class AdvancedByteBuffer {
 		this.data[position + 1] = (byte) ((data >> 16) & 0xFF);
 		this.data[position + 2] = (byte) ((data >> 8) & 0xFF);
 		this.data[position + 3] = (byte) (data & 0xFF);
+		return this;
 	}
 
 	/**
 	 * Writes an int array into the buffer.
 	 *
 	 * @param data the int array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeIntArrayRaw(int[] data) {
+	public AdvancedByteBuffer writeIntArrayRaw(int[] data) {
 		this.ensureSpace(data.length * 4);
 		for (int n = 0; n < data.length; n++) {
 			this.data[this.position++] = (byte) (data[n] >> 24);
@@ -397,6 +426,7 @@ public class AdvancedByteBuffer {
 			this.data[this.position++] = (byte) ((data[n] >> 8) & 0xFF);
 			this.data[this.position++] = (byte) (data[n] & 0xFF);
 		}
+		return this;
 	}
 
 	/**
@@ -406,9 +436,10 @@ public class AdvancedByteBuffer {
 	 * @param data  the int array of which the specified content will be written
 	 * @param start the inclusive start index
 	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeIntArrayRaw(int[] data, int start, int end) {
+	public AdvancedByteBuffer writeIntArrayRaw(int[] data, int start, int end) {
 		this.ensureSpace((end - start + 1) * 4);
 		for (int n = start; n <= end; n++) {
 			this.data[this.position++] = (byte) (data[n] >> 24);
@@ -416,20 +447,22 @@ public class AdvancedByteBuffer {
 			this.data[this.position++] = (byte) ((data[n] >> 8) & 0xFF);
 			this.data[this.position++] = (byte) (data[n] & 0xFF);
 		}
+		return this;
 	}
 
 	/**
 	 * Writes the length and the int array itself into the buffer.
 	 *
 	 * @param data the int array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 * @see #writeInt(int)
 	 * @see #writeIntArrayRaw(int[])
 	 */
-	public void writeIntArray(int[] data) {
+	public AdvancedByteBuffer writeIntArray(int[] data) {
 		this.ensureSpace(4);
 		this.writeInt(data.length);
-		this.writeIntArrayRaw(data);
+		return this.writeIntArrayRaw(data);
 	}
 
 	/**
@@ -439,23 +472,25 @@ public class AdvancedByteBuffer {
 	 * @param data  the int array of which the specified content will be written
 	 * @param start the inclusive start index
 	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 * @see #writeInt(int)
 	 * @see #writeIntArrayRaw(int[], int, int)
 	 */
-	public void writeIntArray(int[] data, int start, int end) {
+	public AdvancedByteBuffer writeIntArray(int[] data, int start, int end) {
 		this.ensureSpace(4);
 		this.writeInt(end - start + 1);
-		this.writeIntArrayRaw(data, start, end);
+		return this.writeIntArrayRaw(data, start, end);
 	}
 
 	/**
 	 * Writes a long into the buffer.
 	 *
-	 * @param data the long that will be written.
+	 * @param data the long that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeLong(long data) {
+	public AdvancedByteBuffer writeLong(long data) {
 		this.ensureSpace(8);
 		this.data[this.position++] = (byte) ((data >> 56) & 0xFF);
 		this.data[this.position++] = (byte) ((data >> 48) & 0xFF);
@@ -465,6 +500,7 @@ public class AdvancedByteBuffer {
 		this.data[this.position++] = (byte) ((data >> 16) & 0xFF);
 		this.data[this.position++] = (byte) ((data >> 8) & 0xFF);
 		this.data[this.position++] = (byte) (data & 0xFF);
+		return this;
 	}
 
 	/**
@@ -472,10 +508,11 @@ public class AdvancedByteBuffer {
 	 *
 	 * @param data     the long that will be written
 	 * @param position the position where the long will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @throws IllegalArgumentException when the position is either smaller as 0 or greater than the capacity of the buffer
 	 * @see #validateArea(int, int)
 	 */
-	public void writeLong(long data, int position) {
+	public AdvancedByteBuffer writeLong(long data, int position) {
 		if (!this.validateArea(position, 8))
 			throw new IllegalArgumentException("Tried writing long to AdvancedByteBuffer at invalid position.");
 
@@ -487,15 +524,17 @@ public class AdvancedByteBuffer {
 		this.data[position + 5] = (byte) ((data >> 16) & 0xFF);
 		this.data[position + 6] = (byte) ((data >> 8) & 0xFF);
 		this.data[position + 7] = (byte) (data & 0xFF);
+		return this;
 	}
 
 	/**
 	 * Writes a long array into the buffer.
 	 *
 	 * @param data the long array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeLongArrayRaw(long[] data) {
+	public AdvancedByteBuffer writeLongArrayRaw(long[] data) {
 		this.ensureSpace(data.length * 8);
 		for (int n = 0; n < data.length; n++) {
 			this.data[this.position++] = (byte) ((data[n] >> 56) & 0xFF);
@@ -507,6 +546,7 @@ public class AdvancedByteBuffer {
 			this.data[this.position++] = (byte) ((data[n] >> 8) & 0xFF);
 			this.data[this.position++] = (byte) (data[n] & 0xFF);
 		}
+		return this;
 	}
 
 	/**
@@ -516,9 +556,10 @@ public class AdvancedByteBuffer {
 	 * @param data  the long array of which the specified content will be written
 	 * @param start the inclusive start index
 	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeLongArrayRaw(long[] data, int start, int end) {
+	public AdvancedByteBuffer writeLongArrayRaw(long[] data, int start, int end) {
 		this.ensureSpace((end - start + 1) * 8);
 		for (int n = start; n <= end; n++) {
 			this.data[this.position++] = (byte) ((data[n] >> 56) & 0xFF);
@@ -530,20 +571,22 @@ public class AdvancedByteBuffer {
 			this.data[this.position++] = (byte) ((data[n] >> 8) & 0xFF);
 			this.data[this.position++] = (byte) (data[n] & 0xFF);
 		}
+		return this;
 	}
 
 	/**
 	 * Writes the length and the long array itself into the buffer.
 	 *
 	 * @param data the long array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 * @see #writeInt(int)
 	 * @see #writeLongArrayRaw(long[])
 	 */
-	public void writeLongArray(long[] data) {
+	public AdvancedByteBuffer writeLongArray(long[] data) {
 		this.ensureSpace(4);
 		this.writeInt(data.length);
-		this.writeLongArrayRaw(data);
+		return this.writeLongArrayRaw(data);
 	}
 
 	/**
@@ -553,25 +596,27 @@ public class AdvancedByteBuffer {
 	 * @param data  the long array of which the specified content will be written
 	 * @param start the inclusive start index
 	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 * @see #writeInt(int)
 	 * @see #writeLongArrayRaw(long[], int, int)
 	 */
-	public void writeLongArray(long[] data, int start, int end) {
+	public AdvancedByteBuffer writeLongArray(long[] data, int start, int end) {
 		this.ensureSpace(4);
 		this.writeInt(end - start + 1);
-		this.writeLongArrayRaw(data, start, end);
+		return this.writeLongArrayRaw(data, start, end);
 	}
 
 	/**
 	 * Writes a float into the buffer.
 	 *
-	 * @param data the float that will be written.
+	 * @param data the float that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #writeInt(int)
 	 */
-	public void writeFloat(float data) {
+	public AdvancedByteBuffer writeFloat(float data) {
 		int floatBits = Float.floatToIntBits(data);
-		this.writeInt(floatBits);
+		return this.writeInt(floatBits);
 	}
 
 	/**
@@ -579,10 +624,11 @@ public class AdvancedByteBuffer {
 	 *
 	 * @param data     the float that will be written
 	 * @param position the position where the float will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @throws IllegalArgumentException when the position is either smaller as 0 or greater than the capacity of the buffer
 	 * @see #validateArea(int, int)
 	 */
-	public void writeFloat(float data, int position) {
+	public AdvancedByteBuffer writeFloat(float data, int position) {
 		if (!this.validateArea(position, 4))
 			throw new IllegalArgumentException("Tried writing float to AdvancedByteBuffer at invalid position.");
 
@@ -591,15 +637,17 @@ public class AdvancedByteBuffer {
 		this.data[position + 1] = (byte) ((floatBits >> 16) & 0xFF);
 		this.data[position + 2] = (byte) ((floatBits >> 8) & 0xFF);
 		this.data[position + 3] = (byte) (floatBits & 0xFF);
+		return this;
 	}
 
 	/**
 	 * Writes a float array into the buffer.
 	 *
 	 * @param data the float array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeFloatArrayRaw(float[] data) {
+	public AdvancedByteBuffer writeFloatArrayRaw(float[] data) {
 		this.ensureSpace(data.length * 4);
 		int floatBits;
 		for (int n = 0; n < data.length; n++) {
@@ -609,6 +657,7 @@ public class AdvancedByteBuffer {
 			this.data[this.position++] = (byte) ((floatBits >> 8) & 0xFF);
 			this.data[this.position++] = (byte) (floatBits & 0xFF);
 		}
+		return this;
 	}
 
 	/**
@@ -618,9 +667,10 @@ public class AdvancedByteBuffer {
 	 * @param data  the float array of which the specified content will be written
 	 * @param start the inclusive start index
 	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeFloatArrayRaw(float[] data, int start, int end) {
+	public AdvancedByteBuffer writeFloatArrayRaw(float[] data, int start, int end) {
 		this.ensureSpace((end - start + 1) * 4);
 		int floatBits;
 		for (int n = start; n <= end; n++) {
@@ -630,20 +680,22 @@ public class AdvancedByteBuffer {
 			this.data[this.position++] = (byte) ((floatBits >> 8) & 0xFF);
 			this.data[this.position++] = (byte) (floatBits & 0xFF);
 		}
+		return this;
 	}
 
 	/**
 	 * Writes the length and the float array itself into the buffer.
 	 *
 	 * @param data the float array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 * @see #writeInt(int)
 	 * @see #writeFloatArrayRaw(float[])
 	 */
-	public void writeFloatArray(float[] data) {
+	public AdvancedByteBuffer writeFloatArray(float[] data) {
 		this.ensureSpace(4);
 		this.writeInt(data.length);
-		this.writeFloatArrayRaw(data);
+		return this.writeFloatArrayRaw(data);
 	}
 
 	/**
@@ -653,25 +705,27 @@ public class AdvancedByteBuffer {
 	 * @param data  the float array of which the specified content will be written
 	 * @param start the inclusive start index
 	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 * @see #writeInt(int)
 	 * @see #writeFloatArrayRaw(float[], int, int)
 	 */
-	public void writeFloatArray(float[] data, int start, int end) {
+	public AdvancedByteBuffer writeFloatArray(float[] data, int start, int end) {
 		this.ensureSpace(4);
 		this.writeInt(end - start + 1);
-		this.writeFloatArrayRaw(data, start, end);
+		return this.writeFloatArrayRaw(data, start, end);
 	}
 
 	/**
 	 * Writes a double into the buffer.
 	 *
 	 * @param data the double that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #writeLong(long)
 	 */
-	public void writeDouble(double data) {
+	public AdvancedByteBuffer writeDouble(double data) {
 		long doubleBits = Double.doubleToLongBits(data);
-		this.writeLong(doubleBits);
+		return this.writeLong(doubleBits);
 	}
 
 	/**
@@ -679,10 +733,11 @@ public class AdvancedByteBuffer {
 	 *
 	 * @param data     the double that will be written
 	 * @param position the position where the double will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @throws IllegalArgumentException when the position is either smaller as 0 or greater than the capacity of the buffer
 	 * @see #validateArea(int, int)
 	 */
-	public void writeDouble(double data, int position) {
+	public AdvancedByteBuffer writeDouble(double data, int position) {
 		if (!this.validateArea(position, 8))
 			throw new IllegalArgumentException("Tried writing double to AdvancedByteBuffer at invalid position.");
 
@@ -695,15 +750,17 @@ public class AdvancedByteBuffer {
 		this.data[position + 5] = (byte) ((doubleBits >> 16) & 0xFF);
 		this.data[position + 6] = (byte) ((doubleBits >> 8) & 0xFF);
 		this.data[position + 7] = (byte) (doubleBits & 0xFF);
+		return this;
 	}
 
 	/**
 	 * Writes a double array into the buffer.
 	 *
 	 * @param data the double array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeDoubleArrayRaw(double[] data) {
+	public AdvancedByteBuffer writeDoubleArrayRaw(double[] data) {
 		this.ensureSpace(data.length * 8);
 		long doubleBits;
 		for (int n = 0; n < data.length; n++) {
@@ -717,6 +774,7 @@ public class AdvancedByteBuffer {
 			this.data[this.position++] = (byte) ((doubleBits >> 8) & 0xFF);
 			this.data[this.position++] = (byte) (doubleBits & 0xFF);
 		}
+		return this;
 	}
 
 	/**
@@ -726,9 +784,10 @@ public class AdvancedByteBuffer {
 	 * @param data  the double array of which the specified content will be written
 	 * @param start the inclusive start index
 	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 */
-	public void writeDoubleArrayRaw(double[] data, int start, int end) {
+	public AdvancedByteBuffer writeDoubleArrayRaw(double[] data, int start, int end) {
 		this.ensureSpace((end - start + 1) * 8);
 		long doubleBits;
 		for (int n = start; n <= end; n++) {
@@ -742,20 +801,22 @@ public class AdvancedByteBuffer {
 			this.data[this.position++] = (byte) ((doubleBits >> 8) & 0xFF);
 			this.data[this.position++] = (byte) (doubleBits & 0xFF);
 		}
+		return this;
 	}
 
 	/**
 	 * Writes the length and the double array itself into the buffer.
 	 *
 	 * @param data the double array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 * @see #writeInt(int)
 	 * @see #writeIntArrayRaw(int[])
 	 */
-	public void writeDoubleArray(double[] data) {
+	public AdvancedByteBuffer writeDoubleArray(double[] data) {
 		this.ensureSpace(4);
 		this.writeInt(data.length);
-		this.writeDoubleArrayRaw(data);
+		return this.writeDoubleArrayRaw(data);
 	}
 
 	/**
@@ -765,41 +826,51 @@ public class AdvancedByteBuffer {
 	 * @param data  the int array of which the specified content will be written
 	 * @param start the inclusive start index
 	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
 	 * @see #writeInt(int)
 	 * @see #writeDoubleArrayRaw(double[], int, int)
 	 */
-	public void writeDoubleArray(double[] data, int start, int end) {
+	public AdvancedByteBuffer writeDoubleArray(double[] data, int start, int end) {
 		this.ensureSpace(4);
 		this.writeInt(end - start + 1);
-		this.writeDoubleArrayRaw(data, start, end);
+		return this.writeDoubleArrayRaw(data, start, end);
 	}
 
 	/**
 	 * Sets the position back to 0.
+	 *
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 */
-	public void rewind() {
+	public AdvancedByteBuffer rewind() {
 		this.position = 0;
+		return this;
 	}
 
 	/**
 	 * Sets the limit of the buffer to the current position and the reading position back to 0.
+	 *
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 */
-	public void flip() {
+	public AdvancedByteBuffer flip() {
 		this.limit = this.position;
 		this.position = 0;
+		return this;
 	}
 
 	/**
 	 * Resizes the {@link #data} array to the current number of stored values and resets the position back to 0.
+	 *
+	 * @return the instance of the {@link AdvancedByteBuffer}
 	 */
-	public void shrink() {
+	public AdvancedByteBuffer shrink() {
 		if (this.position != this.data.length) {
 			byte[] newData = new byte[this.position];
 			System.arraycopy(this.data, 0, newData, 0, this.position);
 			this.data = newData;
 		}
 		this.position = 0;
+		return this;
 	}
 
 	/**
@@ -1193,6 +1264,15 @@ public class AdvancedByteBuffer {
 			array[n] = this.readDouble();
 		}
 		return array;
+	}
+
+	/**
+	 * Gets the capacity of the byte buffer.
+	 *
+	 * @return the capacity of the byte buffer
+	 */
+	public int getCapacity() {
+		return this.data.length;
 	}
 
 	/**
