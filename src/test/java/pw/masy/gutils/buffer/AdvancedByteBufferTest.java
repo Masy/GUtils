@@ -1,5 +1,6 @@
 package pw.masy.gutils.buffer;
 
+import java.nio.charset.Charset;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -51,6 +52,63 @@ public class AdvancedByteBufferTest {
 		buffer5.writeByteArray(array, 1, 3);
 		buffer5.rewind();
 		Assert.assertArrayEquals(section, buffer5.readByteArray());
+	}
+
+	@Test
+	public void testChar() {
+		AdvancedByteBuffer buffer = new AdvancedByteBuffer(1);
+		buffer.writeByte('a');
+		buffer.rewind();
+		Assert.assertEquals('a', buffer.readChar());
+
+		char[] array = new char[]{'6', 'b', 'z', '$', 'H'};
+		char[] section = new char[]{'b', 'z', '$'};
+
+		AdvancedByteBuffer buffer2 = new AdvancedByteBuffer(5);
+		buffer2.writeCharArrayRaw(array);
+		buffer2.rewind();
+		char[] result = buffer2.readCharArray(5);
+		Assert.assertArrayEquals(array, result);
+		buffer2.rewind();
+		char[] result2 = new char[5];
+		buffer2.readCharArray(result2);
+		Assert.assertArrayEquals(array, result2);
+
+		AdvancedByteBuffer buffer3 = new AdvancedByteBuffer(3);
+		buffer3.writeCharArrayRaw(array, 1, 3);
+		buffer3.rewind();
+		char[] result3 = buffer3.readCharArray(3);
+		Assert.assertArrayEquals(section, result3);
+		char[] result4 = new char[3];
+		buffer3.rewind();
+		buffer3.readCharArray(result4);
+		Assert.assertArrayEquals(section, result4);
+
+		AdvancedByteBuffer buffer4 = new AdvancedByteBuffer(5);
+		buffer4.writeCharArray(array);
+		buffer4.rewind();
+		Assert.assertArrayEquals(array, buffer4.readCharArray());
+
+		AdvancedByteBuffer buffer5 = new AdvancedByteBuffer(3);
+		buffer5.writeCharArray(array, 1, 3);
+		buffer5.rewind();
+		Assert.assertArrayEquals(section, buffer5.readCharArray());
+	}
+
+	@Test
+	public void testString() {
+		String string1 = "this is a test string";
+		String string2 = "this $ is ääääääh... a test string!";
+
+		AdvancedByteBuffer buffer = new AdvancedByteBuffer(21);
+		buffer.writeString(string1, Charset.forName("ASCII"));
+		buffer.rewind();
+		Assert.assertEquals(string1, buffer.readString(Charset.forName("ASCII")));
+
+		AdvancedByteBuffer buffer2 = new AdvancedByteBuffer(40);
+		buffer2.writeString(string2);
+		buffer2.rewind();
+		Assert.assertEquals(string2, buffer2.readString());
 	}
 
 	@Test
