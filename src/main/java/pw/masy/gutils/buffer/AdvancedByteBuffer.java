@@ -1,14 +1,14 @@
 package pw.masy.gutils.buffer;
 
-import java.nio.ByteBuffer;
-import java.util.HashMap;
 import java.util.function.Consumer;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * Advanced implementation of a byte buffer with the ability to read and write all primitive data types.
+ *
+ * <p>Different to the {@link java.nio.ByteBuffer} buffer, the internal array of the buffer will be resized when more space is needed.
+ * The minimum resize amount is defined by the {@link #threshold} of the buffer.</p>
  */
 public class AdvancedByteBuffer {
 
@@ -67,6 +67,20 @@ public class AdvancedByteBuffer {
 		this.initialCapacity = data.length;
 		this.limit = data.length;
 		this.threshold = threshold;
+	}
+
+	/**
+	 * Copies the given advanced byte buffer into a new one.
+	 *
+	 * @param copy the {@link AdvancedByteBuffer} that will be copied
+	 */
+	public AdvancedByteBuffer(AdvancedByteBuffer copy) {
+		this.data = new byte[copy.data.length];
+		System.arraycopy(copy.data, 0, this.data, 0, copy.data.length);
+		this.initialCapacity = copy.initialCapacity;
+		this.limit = copy.limit;
+		this.threshold = copy.threshold;
+		this.position = copy.position;
 	}
 
 	/**
