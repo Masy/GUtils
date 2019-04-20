@@ -197,6 +197,62 @@ public class AdvancedByteBuffer {
 	}
 
 	/**
+	 * Writes an int as var int into the buffer.
+	 *
+	 * @param data the int that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #writeUnsignedVarInt(int)
+	 */
+	public AdvancedByteBuffer writeVarInt(int data) {
+		return this.writeUnsignedVarInt((data << 1) ^ (data >> 31));
+	}
+
+	/**
+	 * Writes an int as unsigned var int into the buffer.
+	 *
+	 * @param data the int that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #writeByte(int)
+	 */
+	public AdvancedByteBuffer writeUnsignedVarInt(int data) {
+		while ((data & 0xFFFFFF80) != 0L) {
+			this.writeByte((data & 0x7F) | 0x80);
+			data >>>= 7;
+		}
+		return this.writeByte(data & 0x7F);
+	}
+
+	/**
+	 * Writes an int as var in into the buffer at the given position.
+	 *
+	 * @param data     the int that will be written
+	 * @param position the position where the int will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @throws IllegalArgumentException when the position is either smaller as 0 or greater than the capacity of the buffer.
+	 * @see #writeUnsignedVarInt(int, int)
+	 */
+	public AdvancedByteBuffer writeVarInt(int data, int position) {
+		return this.writeUnsignedVarInt((data << 1) ^ (data >> 31), position);
+	}
+
+	/**
+	 * Writes an in as unsigned var in into the buffer at the given position.
+	 *
+	 * @param data     the int that will be written
+	 * @param position the position where the int will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @throws IllegalArgumentException when the position is either smaller as 0 or greater than the capacity of the buffer.
+	 * @see #writeByte(int, int)
+	 */
+	public AdvancedByteBuffer writeUnsignedVarInt(int data, int position) {
+		while ((data & 0xFFFFFF80) != 0L) {
+			this.writeByte((data & 0x7F) | 0x80, position++);
+			data >>>= 7;
+		}
+		return this.writeByte(data & 0x7F, position);
+	}
+
+	/**
 	 * Writes a char into the buffer.
 	 *
 	 * @param data the char that will be written
@@ -1060,6 +1116,38 @@ public class AdvancedByteBuffer {
 			array[n] = this.readByte();
 		}
 		return array;
+	}
+
+	/**
+	 * Reads a var int from the buffer.
+	 *
+	 * @return the var int as int
+	 * @see #readUnsignedVarInt()
+	 */
+	public int readVarInt() {
+		int raw = (int) this.readUnsignedVarInt();
+		int temp = (((raw << 31) >> 31) ^ raw) >> 1;
+		return temp ^ (raw & (1 << 31));
+	}
+
+	/**
+	 * Reads an unsigned var int from the buffer.
+	 *
+	 * @return the unsigned var int as long
+	 * @see #readByte()
+	 */
+	public long readUnsignedVarInt() {
+		int data = 0;
+		int n = 0;
+		int b;
+		while (((b = this.readByte()) & 0x80) != 0) {
+			data |= (b & 0x7F) << n;
+			n += 7;
+			if (n > 35) {
+				throw new IllegalArgumentException("Variable length quantitiy is too long.");
+			}
+		}
+		return data | (b << n);
 	}
 
 	/**
