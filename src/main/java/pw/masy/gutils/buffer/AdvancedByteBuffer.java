@@ -169,12 +169,12 @@ public class AdvancedByteBuffer {
 	 * @param data the byte array that will be written
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeByteArrayRaw(byte[])
 	 */
 	public AdvancedByteBuffer writeByteArray(byte[] data) {
 		this.ensureSpace(4);
-		this.writeInt(data.length);
+		this.writeVarInt(data.length);
 		return this.writeByteArrayRaw(data);
 	}
 
@@ -187,12 +187,12 @@ public class AdvancedByteBuffer {
 	 * @param end   the inclusive end index
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeByteArrayRaw(byte[], int, int)
 	 */
 	public AdvancedByteBuffer writeByteArray(byte[] data, int start, int end) {
 		this.ensureSpace(4);
-		this.writeInt(end - start + 1);
+		this.writeVarInt(end - start + 1);
 		return this.writeByteArrayRaw(data, start, end);
 	}
 
@@ -250,6 +250,126 @@ public class AdvancedByteBuffer {
 			data >>>= 7;
 		}
 		return this.writeByte(data & 0x7F, position);
+	}
+
+	/**
+	 * Writes an int array as var int array into the buffer.
+	 *
+	 * @param data the int array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #writeVarInt(int)
+	 */
+	public AdvancedByteBuffer writeVarIntArrayRaw(int[] data) {
+		for (int n = 0; n < data.length; n++) {
+			this.writeVarInt(data[n]);
+		}
+		return this;
+	}
+
+	/**
+	 * Writes the specified content of the int array as var int array into the buffer.<br>
+	 * The ints from <code>start</code> to inclusively <code>end</code> will be written.
+	 *
+	 * @param data  the int array of which the specified content will be written
+	 * @param start the inclusive start index
+	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #writeVarInt(int)
+	 */
+	public AdvancedByteBuffer writeVarIntArrayRaw(int[] data, int start, int end) {
+		for (int n = start; n <= end; n++) {
+			this.writeVarInt(data[n]);
+		}
+		return this;
+	}
+
+	/**
+	 * Writes an int array as unsigned var int array into the buffer.
+	 *
+	 * @param data the int array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #writeUnsignedVarInt(int)
+	 */
+	public AdvancedByteBuffer writeUnsignedVarIntArrayRaw(int[] data) {
+		for (int n = 0; n < data.length; n++) {
+			this.writeUnsignedVarInt(data[n]);
+		}
+		return this;
+	}
+
+	/**
+	 * Writes the specified content of the int array as unsigned var int array into the buffer.<br>
+	 * The ints from <code>start</code> to inclusively <code>end</code> will be written.
+	 *
+	 * @param data  the int array of which the specified content will be written
+	 * @param start the inclusive start index
+	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #writeUnsignedVarInt(int)
+	 */
+	public AdvancedByteBuffer writeUnsignedVarIntArrayRaw(int[] data, int start, int end) {
+		for (int n = start; n <= end; n++) {
+			this.writeUnsignedVarInt(data[n]);
+		}
+		return this;
+	}
+
+	/**
+	 * Writes the length and the int array itself as var int array into the buffer.
+	 *
+	 * @param data the int array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #writeVarInt(int)
+	 * @see #writeVarIntArrayRaw(int[])
+	 */
+	public AdvancedByteBuffer writeVarIntArray(int[] data) {
+		this.writeVarInt(data.length);
+		return this.writeVarIntArrayRaw(data);
+	}
+
+	/**
+	 * Writes the length and the specified content of the int array as var int array into the buffer.<br>
+	 * The ints from <code>start</code> to inclusively <code>end</code> will be written.
+	 *
+	 * @param data  the int array of which the specified content will be written
+	 * @param start the inclusive start index
+	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #writeVarInt(int)
+	 * @see #writeVarIntArrayRaw(int[], int, int)
+	 */
+	public AdvancedByteBuffer writeVarIntArray(int[] data, int start, int end) {
+		this.writeVarInt(end - start + 1);
+		return this.writeVarIntArrayRaw(data, start, end);
+	}
+
+	/**
+	 * Writes the length and the int array itself as unsigned var int array into the buffer.
+	 *
+	 * @param data the int array that will be written
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #writeVarInt(int)
+	 * @see #writeUnsignedVarIntArrayRaw(int[])
+	 */
+	public AdvancedByteBuffer writeUnsignedVarIntArray(int[] data) {
+		this.writeVarInt(data.length);
+		return this.writeUnsignedVarIntArrayRaw(data);
+	}
+
+	/**
+	 * Writes the length and the specified content of the int array as unsigned var int array into the buffer.<br>
+	 * The ints from <code>start</code> to inclusively <code>end</code> will be written.
+	 *
+	 * @param data  the int array of which the specified content will be written
+	 * @param start the inclusive start index
+	 * @param end   the inclusive end index
+	 * @return the instance of the {@link AdvancedByteBuffer}
+	 * @see #writeVarInt(int)
+	 * @see #writeUnsignedVarIntArrayRaw(int[], int, int)
+	 */
+	public AdvancedByteBuffer writeUnsignedVarIntArray(int[] data, int start, int end) {
+		this.writeVarInt(end - start + 1);
+		return this.writeUnsignedVarIntArrayRaw(data, start, end);
 	}
 
 	/**
@@ -321,12 +441,12 @@ public class AdvancedByteBuffer {
 	 * @param data the char array that will be written
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeCharArrayRaw(char[])
 	 */
 	public AdvancedByteBuffer writeCharArray(char[] data) {
 		this.ensureSpace(4);
-		this.writeInt(data.length);
+		this.writeVarInt(data.length);
 		return this.writeCharArrayRaw(data);
 	}
 
@@ -339,12 +459,12 @@ public class AdvancedByteBuffer {
 	 * @param end   the inclusive end index
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeCharArrayRaw(char[], int, int)
 	 */
 	public AdvancedByteBuffer writeCharArray(char[] data, int start, int end) {
 		this.ensureSpace(4);
-		this.writeInt(end - start + 1);
+		this.writeVarInt(end - start + 1);
 		return this.writeCharArrayRaw(data, start, end);
 	}
 
@@ -440,12 +560,12 @@ public class AdvancedByteBuffer {
 	 * @param data the boolean array that will be written
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeBooleanArrayRaw(boolean[])
 	 */
 	public AdvancedByteBuffer writeBooleanArray(boolean[] data) {
 		this.ensureSpace(4);
-		this.writeInt(data.length);
+		this.writeVarInt(data.length);
 		return this.writeBooleanArrayRaw(data);
 	}
 
@@ -458,12 +578,12 @@ public class AdvancedByteBuffer {
 	 * @param end   the inclusive end index
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeBooleanArrayRaw(boolean[], int, int)
 	 */
 	public AdvancedByteBuffer writeBooleanArray(boolean[] data, int start, int end) {
 		this.ensureSpace(4);
-		this.writeInt(end - start + 1);
+		this.writeVarInt(end - start + 1);
 		return this.writeBooleanArrayRaw(data, start, end);
 	}
 
@@ -540,12 +660,12 @@ public class AdvancedByteBuffer {
 	 * @param data the short array that will be written
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeShortArrayRaw(short[])
 	 */
 	public AdvancedByteBuffer writeShortArray(short[] data) {
 		this.ensureSpace(4);
-		this.writeInt(data.length);
+		this.writeVarInt(data.length);
 		return this.writeShortArrayRaw(data);
 	}
 
@@ -558,12 +678,12 @@ public class AdvancedByteBuffer {
 	 * @param end   the inclusive end index
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeShortArrayRaw(short[], int, int)
 	 */
 	public AdvancedByteBuffer writeShortArray(short[] data, int start, int end) {
 		this.ensureSpace(4);
-		this.writeInt(end - start + 1);
+		this.writeVarInt(end - start + 1);
 		return this.writeShortArrayRaw(data, start, end);
 	}
 
@@ -648,12 +768,12 @@ public class AdvancedByteBuffer {
 	 * @param data the int array that will be written
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeIntArrayRaw(int[])
 	 */
 	public AdvancedByteBuffer writeIntArray(int[] data) {
 		this.ensureSpace(4);
-		this.writeInt(data.length);
+		this.writeVarInt(data.length);
 		return this.writeIntArrayRaw(data);
 	}
 
@@ -666,12 +786,12 @@ public class AdvancedByteBuffer {
 	 * @param end   the inclusive end index
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeIntArrayRaw(int[], int, int)
 	 */
 	public AdvancedByteBuffer writeIntArray(int[] data, int start, int end) {
 		this.ensureSpace(4);
-		this.writeInt(end - start + 1);
+		this.writeVarInt(end - start + 1);
 		return this.writeIntArrayRaw(data, start, end);
 	}
 
@@ -772,12 +892,12 @@ public class AdvancedByteBuffer {
 	 * @param data the long array that will be written
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeLongArrayRaw(long[])
 	 */
 	public AdvancedByteBuffer writeLongArray(long[] data) {
 		this.ensureSpace(4);
-		this.writeInt(data.length);
+		this.writeVarInt(data.length);
 		return this.writeLongArrayRaw(data);
 	}
 
@@ -790,12 +910,12 @@ public class AdvancedByteBuffer {
 	 * @param end   the inclusive end index
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeLongArrayRaw(long[], int, int)
 	 */
 	public AdvancedByteBuffer writeLongArray(long[] data, int start, int end) {
 		this.ensureSpace(4);
-		this.writeInt(end - start + 1);
+		this.writeVarInt(end - start + 1);
 		return this.writeLongArrayRaw(data, start, end);
 	}
 
@@ -881,12 +1001,12 @@ public class AdvancedByteBuffer {
 	 * @param data the float array that will be written
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeFloatArrayRaw(float[])
 	 */
 	public AdvancedByteBuffer writeFloatArray(float[] data) {
 		this.ensureSpace(4);
-		this.writeInt(data.length);
+		this.writeVarInt(data.length);
 		return this.writeFloatArrayRaw(data);
 	}
 
@@ -899,12 +1019,12 @@ public class AdvancedByteBuffer {
 	 * @param end   the inclusive end index
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeFloatArrayRaw(float[], int, int)
 	 */
 	public AdvancedByteBuffer writeFloatArray(float[] data, int start, int end) {
 		this.ensureSpace(4);
-		this.writeInt(end - start + 1);
+		this.writeVarInt(end - start + 1);
 		return this.writeFloatArrayRaw(data, start, end);
 	}
 
@@ -1002,12 +1122,12 @@ public class AdvancedByteBuffer {
 	 * @param data the double array that will be written
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeIntArrayRaw(int[])
 	 */
 	public AdvancedByteBuffer writeDoubleArray(double[] data) {
 		this.ensureSpace(4);
-		this.writeInt(data.length);
+		this.writeVarInt(data.length);
 		return this.writeDoubleArrayRaw(data);
 	}
 
@@ -1020,12 +1140,12 @@ public class AdvancedByteBuffer {
 	 * @param end   the inclusive end index
 	 * @return the instance of the {@link AdvancedByteBuffer}
 	 * @see #ensureSpace(int)
-	 * @see #writeInt(int)
+	 * @see #writeVarInt(int)
 	 * @see #writeDoubleArrayRaw(double[], int, int)
 	 */
 	public AdvancedByteBuffer writeDoubleArray(double[] data, int start, int end) {
 		this.ensureSpace(4);
-		this.writeInt(end - start + 1);
+		this.writeVarInt(end - start + 1);
 		return this.writeDoubleArrayRaw(data, start, end);
 	}
 
@@ -1079,10 +1199,11 @@ public class AdvancedByteBuffer {
 	 * This method assumes the next value will be the size of the array.
 	 *
 	 * @return the read byte array
+	 * @see #readVarInt()
 	 * @see #readByte()
 	 */
 	public byte[] readByteArray() {
-		byte[] array = new byte[this.readInt()];
+		byte[] array = new byte[this.readVarInt()];
 		for (int n = 0; n < array.length; n++) {
 			array[n] = this.readByte();
 		}
@@ -1151,6 +1272,95 @@ public class AdvancedByteBuffer {
 	}
 
 	/**
+	 * Reads a var int array as int array from the buffer.<br>
+	 * This method assumes the next value will be the size of the array.
+	 *
+	 * @return the read int array
+	 * @see #readVarInt()
+	 */
+	public int[] readVarIntArray() {
+		int[] array = new int[this.readVarInt()];
+		for (int n = 0; n < array.length; n++) {
+			array[n] = this.readVarInt();
+		}
+		return array;
+	}
+
+	/**
+	 * Reads a var int array as int array with the given length from the buffer.
+	 *
+	 * @param length the length of the int array
+	 * @return the read int array
+	 * @see #readVarInt()
+	 */
+	public int[] readVarIntArray(int length) {
+		int[] array = new int[length];
+		for (int n = 0; n < length; n++) {
+			array[n] = this.readVarInt();
+		}
+		return array;
+	}
+
+	/**
+	 * Reads a var int array as int array from the buffer and writes into the given array.
+	 *
+	 * @param array the int array the values will be written to.
+	 * @return the read int array
+	 * @see #readVarInt()
+	 */
+	public int[] readVarIntArray(int[] array) {
+		for (int n = 0; n < array.length; n++) {
+			array[n] = this.readVarInt();
+		}
+		return array;
+	}
+
+	/**
+	 * Reads an unsigned var int array as long array from the buffer.<br>
+	 * This method assumes the next value will be the size of the array.
+	 *
+	 * @return the read long array
+	 * @see #readVarInt()
+	 * @see #readUnsignedVarInt()
+	 */
+	public long[] readUnsignedVarIntArray() {
+		long[] array = new long[this.readVarInt()];
+		for (int n = 0; n < array.length; n++) {
+			array[n] = this.readUnsignedVarInt();
+		}
+		return array;
+	}
+
+	/**
+	 * Reads an unsigned var int array as long array with the given length from the buffer.
+	 *
+	 * @param length the length of the long array
+	 * @return the read long array
+	 * @see #readVarInt()
+	 */
+	public long[] readUnsignedVarIntArray(int length) {
+		long[] array = new long[length];
+		for (int n = 0; n < length; n++) {
+			array[n] = this.readUnsignedVarInt();
+		}
+		return array;
+	}
+
+	/**
+	 * Reads an unsigned var int array as long array from the buffer and writes into the given array.
+	 *
+	 * @param array the long array the values will be written to.
+	 * @return the read long array
+	 * @see #readUnsignedVarInt()
+	 */
+	public long[] readUnsignedVarIntArray(long[] array) {
+		for (int n = 0; n < array.length; n++) {
+			array[n] = this.readUnsignedVarInt();
+		}
+		return array;
+	}
+
+	/**
 	 * Reads a char from the buffer.
 	 *
 	 * @return the read char
@@ -1164,10 +1374,11 @@ public class AdvancedByteBuffer {
 	 * This method assumes the next value will be the size of the array.
 	 *
 	 * @return the read char array
+	 * @see #readVarInt()
 	 * @see #readChar()
 	 */
 	public char[] readCharArray() {
-		char[] array = new char[this.readInt()];
+		char[] array = new char[this.readVarInt()];
 		for (int n = 0; n < array.length; n++) {
 			array[n] = this.readChar();
 		}
@@ -1240,10 +1451,11 @@ public class AdvancedByteBuffer {
 	 * This method assumes the next value will be the size of the array.
 	 *
 	 * @return the read boolean array
+	 * @see #readVarInt()
 	 * @see #readBoolean()
 	 */
 	public boolean[] readBooleanArray() {
-		boolean[] array = new boolean[this.readInt()];
+		boolean[] array = new boolean[this.readVarInt()];
 		for (int n = 0; n < array.length; n++) {
 			array[n] = this.readBoolean();
 		}
@@ -1296,10 +1508,11 @@ public class AdvancedByteBuffer {
 	 * This method assumes the next value will be the size of the array.
 	 *
 	 * @return the read short array
+	 * @see #readVarInt()
 	 * @see #readShort()
 	 */
 	public short[] readShortArray() {
-		short[] array = new short[this.readInt()];
+		short[] array = new short[this.readVarInt()];
 		for (int n = 0; n < array.length; n++) {
 			array[n] = this.readShort();
 		}
@@ -1354,10 +1567,11 @@ public class AdvancedByteBuffer {
 	 * This method assumes the next value will be the size of the array.
 	 *
 	 * @return the read int array.
+	 * @see #readVarInt()
 	 * @see #readInt()
 	 */
 	public int[] readIntArray() {
-		int[] array = new int[this.readInt()];
+		int[] array = new int[this.readVarInt()];
 		for (int n = 0; n < array.length; n++) {
 			array[n] = this.readInt();
 		}
@@ -1416,10 +1630,11 @@ public class AdvancedByteBuffer {
 	 * This method assumes the next value will be the size of the array.
 	 *
 	 * @return the read long array.
+	 * @see #readVarInt()
 	 * @see #readLong()
 	 */
 	public long[] readLongArray() {
-		long[] array = new long[this.readInt()];
+		long[] array = new long[this.readVarInt()];
 		for (int n = 0; n < array.length; n++) {
 			array[n] = this.readLong();
 		}
@@ -1471,10 +1686,11 @@ public class AdvancedByteBuffer {
 	 * This method assumes the next value will be the size of the array.
 	 *
 	 * @return the read float array
+	 * @see #readVarInt()
 	 * @see #readFloat()
 	 */
 	public float[] readFloatArray() {
-		float[] array = new float[this.readInt()];
+		float[] array = new float[this.readVarInt()];
 		for (int n = 0; n < array.length; n++) {
 			array[n] = this.readFloat();
 		}
@@ -1526,10 +1742,11 @@ public class AdvancedByteBuffer {
 	 * This method assumes the next value will be the size of the array.
 	 *
 	 * @return the read double array
+	 * @see #readVarInt()
 	 * @see #readDouble()
 	 */
 	public double[] readDoubleArray() {
-		double[] array = new double[this.readInt()];
+		double[] array = new double[this.readVarInt()];
 		for (int n = 0; n < array.length; n++) {
 			array[n] = this.readDouble();
 		}
