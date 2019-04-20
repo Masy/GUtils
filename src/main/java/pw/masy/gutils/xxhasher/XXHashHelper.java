@@ -30,7 +30,7 @@ public final class XXHashHelper {
 	 * @param seed the seed of the hasher
 	 * @return a {@link StreamingXXHash64} initialized with the given seed
 	 */
-	public static StreamingXXHash64 init64(long seed) {
+	public static StreamingXXHash64 get64BitHasher(long seed) {
 		return FACTORY.newStreamingHash64(seed);
 	}
 
