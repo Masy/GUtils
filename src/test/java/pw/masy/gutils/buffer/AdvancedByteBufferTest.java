@@ -55,6 +55,20 @@ public class AdvancedByteBufferTest {
 	}
 
 	@Test
+	public void testVarInt() {
+		AdvancedByteBuffer buffer = new AdvancedByteBuffer(4);
+		buffer.writeVarInt(1827354513);
+		buffer.rewind();
+		Assert.assertEquals(1827354513, buffer.readVarInt());
+
+		AdvancedByteBuffer buffer2 = new AdvancedByteBuffer(2);
+		buffer2.writeVarInt(48535);
+		buffer2.rewind();
+		Assert.assertEquals(2, buffer2.getLimit());
+		Assert.assertEquals(48535, buffer2.readVarInt());
+	}
+
+	@Test
 	public void testChar() {
 		AdvancedByteBuffer buffer = new AdvancedByteBuffer(1);
 		buffer.writeByte('a');
