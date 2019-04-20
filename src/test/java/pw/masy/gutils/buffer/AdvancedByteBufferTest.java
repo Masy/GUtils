@@ -66,6 +66,39 @@ public class AdvancedByteBufferTest {
 		buffer2.rewind();
 		Assert.assertEquals(2, buffer2.getLimit());
 		Assert.assertEquals(48535, buffer2.readVarInt());
+
+		int[] array = new int[] {-23, 444444, 123487614, -324876523, 777777};
+		int[] section = new int[] {444444, 123487614, -324876523};
+
+		AdvancedByteBuffer buffer3 = new AdvancedByteBuffer(20);
+		buffer3.writeVarIntArrayRaw(array);
+		buffer3.rewind();
+		int[] result = buffer3.readVarIntArray(5);
+		Assert.assertArrayEquals(array, result);
+		int[] result2 = new int[5];
+		buffer3.rewind();
+		buffer3.readVarIntArray(result2);
+		Assert.assertArrayEquals(array, result2);
+
+		AdvancedByteBuffer buffer4 = new AdvancedByteBuffer(12);
+		buffer4.writeVarIntArrayRaw(array, 1, 3);
+		buffer4.rewind();
+		int[] result3 = buffer4.readVarIntArray(3);
+		Assert.assertArrayEquals(section, result3);
+		int[] result4 = new int[3];
+		buffer4.rewind();
+		buffer4.readVarIntArray(result4);
+		Assert.assertArrayEquals(section, result4);
+
+		AdvancedByteBuffer buffer5 = new AdvancedByteBuffer(20);
+		buffer5.writeVarIntArray(array);
+		buffer5.rewind();
+		Assert.assertArrayEquals(array, buffer5.readVarIntArray());
+
+		AdvancedByteBuffer buffer6 = new AdvancedByteBuffer(12);
+		buffer6.writeVarIntArray(array, 1, 3);
+		buffer6.rewind();
+		Assert.assertArrayEquals(section, buffer6.readVarIntArray());
 	}
 
 	@Test
