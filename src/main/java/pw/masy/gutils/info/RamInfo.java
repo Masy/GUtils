@@ -12,7 +12,8 @@ public final class RamInfo extends BaseInfo {
 
 	private static final double BYTES_TO_MB = 1024 * 1024;
 
-	@Getter private static double maxMemory = RUNTIME.maxMemory() / BYTES_TO_MB;
+	public static final double TOTAL_MEMORY = SYSTEM_INFO.getHardware().getMemory().getTotal() / BYTES_TO_MB;
+	public static final double HEAP_SIZE = RUNTIME.maxMemory() / BYTES_TO_MB;
 	@Getter private static double allocatedMemory;
 	@Getter private static double usedMemory;
 
