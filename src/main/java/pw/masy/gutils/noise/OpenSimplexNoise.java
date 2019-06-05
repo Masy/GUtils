@@ -70,7 +70,7 @@ public class OpenSimplexNoise {
 	}
 
 	/**
-	 * Evaluates a noise value based on 2 coordinates.
+	 * Evaluates a noise value based on 2 coordinates between -1 and 1.
 	 *
 	 * @param x the x coordinate
 	 * @param y the y coordinate
@@ -193,7 +193,7 @@ public class OpenSimplexNoise {
 	//3D OpenSimplex Noise.
 
 	/**
-	 * Evaluates a noise value based on 3 coordinates.
+	 * Evaluates a noise value based on 3 coordinates between -1 and 1.
 	 *
 	 * @param x the x coordinate
 	 * @param y the y coordinate
