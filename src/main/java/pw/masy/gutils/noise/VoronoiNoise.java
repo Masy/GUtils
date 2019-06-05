@@ -15,7 +15,7 @@ public class VoronoiNoise {
 	private final Vec2d cellOffset;
 
 	/**
-	 * Constructs a new voronoi noise instance
+	 * Constructs a new voronoi noise instance.
 	 *
 	 * @param seed the 64 bit seed of the voronoi noise
 	 */

@@ -45,6 +45,7 @@ public class ResourceLoader {
 	 * Loads an inner-jar file as a string.
 	 *
 	 * @param path the path to the file that will be loaded
+	 * @param charset the charset of the string
 	 * @return the loaded file as string
 	 * @throws IOException when the file could not be loaded
 	 */
@@ -60,6 +61,7 @@ public class ResourceLoader {
 	 * Loads an outer-jar file as a string.
 	 *
 	 * @param path the path to the file that will be loaded
+	 * @param charset the charset of the string
 	 * @return the loaded file as string
 	 * @throws IOException when the file could not be loaded
 	 */

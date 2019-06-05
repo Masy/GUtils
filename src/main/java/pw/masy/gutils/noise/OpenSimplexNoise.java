@@ -1,6 +1,6 @@
 package pw.masy.gutils.noise;
 
-/*
+/**
  * OpenSimplex Noise in Java.
  * by Kurt Spencer modified by Masy
  *
@@ -592,7 +592,7 @@ public class OpenSimplexNoise {
 						ysv_ext1 = ysb;
 						zsv_ext1 = zsb + 2;
 					}
-				} else {//Both closest points on (0,0,0) side
+				} else { //Both closest points on (0,0,0) side
 
 					//One of the two extra points is (0,0,0)
 					dx_ext0 = dx0;
@@ -758,12 +758,32 @@ public class OpenSimplexNoise {
 		return value / NORM_CONSTANT_3D;
 	}
 
+	/**
+	 * Extrapolates... things.
+	 *
+	 * @param xsb some x coordinate
+	 * @param ysb some y coordinate
+	 * @param dx some delta x
+	 * @param dy some delta y
+	 * @return the extrapolated value
+	 */
 	private double extrapolate(int xsb, int ysb, double dx, double dy) {
 		int index = perm[(perm[xsb & 0xFF] + ysb) & 0xFF] & 0x0E;
 		return gradients2D[index] * dx
 				+ gradients2D[index + 1] * dy;
 	}
 
+	/**
+	 * Extrapolates... things. But in 3D!
+	 *
+	 * @param xsb some x coordinate
+	 * @param ysb some y coordinate
+	 * @param zsb some z coordinate
+	 * @param dx some delta x
+	 * @param dy some delta y
+	 * @param dz some delta z
+	 * @return the extrapolated value
+	 */
 	private double extrapolate(int xsb, int ysb, int zsb, double dx, double dy, double dz) {
 		int index = permGradIndex3D[(perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF];
 		return gradients3D[index] * dx
@@ -771,6 +791,12 @@ public class OpenSimplexNoise {
 				+ gradients3D[index + 2] * dz;
 	}
 
+	/**
+	 * Fast floor method.
+	 *
+	 * @param x the value that will be floored.
+	 * @return the floored double
+	 */
 	private static int fastFloor(double x) {
 		int xi = (int) x;
 		return x < xi ? xi - 1 : xi;

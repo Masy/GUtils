@@ -6,7 +6,7 @@ package pw.masy.gutils.tree.octree.exception;
 public class OctreeIndexOutOfBoundsException extends RuntimeException {
 
 	/**
-	 * Constructs a new index out of bounds exception
+	 * Constructs a new index out of bounds exception.
 	 *
 	 * @param message the message of the exception
 	 */
