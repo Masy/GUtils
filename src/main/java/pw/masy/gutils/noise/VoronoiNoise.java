@@ -111,8 +111,8 @@ public class VoronoiNoise {
 
 		// Multiply the coordinates with a "random" number because if x + y = 0 the resulting noise will be 0 as well
 		// This prevents the algorithm returning 0 if y is equal to -x
-		double noiseX = (this.simplexNoiseX.eval(x * distanceScale * 832.873461221, y * distanceScale * 146563.81237577) + 1) / 2;
-		double noiseY = (this.simplexNoiseY.eval(x * distanceScale * 832.873461221, y * distanceScale * 146563.81237577) + 1) / 2;
+		double noiseX = (this.simplexNoiseX.eval(x * distanceScale * 8329.873461221, y * distanceScale * 146563.81237577) + 1) / 2;
+		double noiseY = (this.simplexNoiseY.eval(x * distanceScale * 8329.873461221, y * distanceScale * 146563.81237577) + 1) / 2;
 
 		double[] xOffsets = new double[9];
 		double[] yOffsets = new double[9];

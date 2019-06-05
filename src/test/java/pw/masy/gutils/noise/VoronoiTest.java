@@ -64,6 +64,22 @@ public class VoronoiTest {
 		Assert.assertEquals(cell4, cell8);
 	}
 
+	@Test
+	public void testConsistency() {
+		VoronoiNoise noise1 = new VoronoiNoise(1337L);
+		VoronoiNoise noise2 = new VoronoiNoise(89734L);
+
+		Vec2d cell1 = noise1.eval(1503.0, -8654.0, 16384.0, 4096.0, 0.0005);
+		Vec2d cell2 = noise2.eval(1503.0, -8654.0, 16384.0, 4096.0, 0.0005);
+		Vec3d cell3 = noise1.evalWithDistance(1503.0, -8654.0, 16384.0, 4096.0, 0.0005);
+		Vec3d cell4 = noise2.evalWithDistance(1503.0, -8654.0, 16384.0, 4096.0, 0.0005);
+
+		Assert.assertEquals(cell1.x, cell3.x, 1e-64);
+		Assert.assertEquals(cell1.y, cell3.y, 1e-64);
+		Assert.assertEquals(cell2.x, cell4.x, 1e-64);
+		Assert.assertEquals(cell2.y, cell4.y, 1e-64);
+	}
+
 	@Ignore
 	@Test
 	public void testCell() {
