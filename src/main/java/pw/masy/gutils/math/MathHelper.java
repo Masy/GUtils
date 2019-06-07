@@ -476,4 +476,32 @@ public final class MathHelper {
 		return value;
 	}
 
+	/**
+	 * Maps a value from one range to another.
+	 *
+	 * @param value  the value that will be mapped
+	 * @param oldMin the old min boundary
+	 * @param oldMax the old max boundary
+	 * @param newMin the new min boundary
+	 * @param newMax the new max boundary
+	 * @return the mapped value
+	 */
+	public static float mapRange(float value, float oldMin, float oldMax, float newMin, float newMax) {
+		return newMin + ((newMax - newMin) / (oldMax - oldMin)) * (value - oldMin);
+	}
+
+	/**
+	 * Maps a value from one range to another.
+	 *
+	 * @param value  the value that will be mapped
+	 * @param oldMin the old min boundary
+	 * @param oldMax the old max boundary
+	 * @param newMin the new min boundary
+	 * @param newMax the new max boundary
+	 * @return the mapped value
+	 */
+	public static double mapRange(double value, double oldMin, double oldMax, double newMin, double newMax) {
+		return newMin + ((newMax - newMin) / (oldMax - oldMin)) * (value - oldMin);
+	}
+
 }
