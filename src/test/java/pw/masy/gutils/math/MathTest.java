@@ -203,4 +203,30 @@ public class MathTest {
 		MathHelper.loop(0.25, 30.25, 25.25);
 	}
 
+	@Test
+	public void testMapRangeFloat() {
+		float ranged = MathHelper.mapRange(12.5f, 11.0f, 14.0f, 0.0f, 1.0f);
+		float ranged2 = MathHelper.mapRange(13.0f, 11.0f, 14.0f, 0.0f, 1.0f);
+		float ranged3 = MathHelper.mapRange(-3.0f, -5.0f, 0.0f, 0.0f, 1.0f);
+		float ranged4 = MathHelper.mapRange(12.5f, 10.0f, 15.0f, -10.0f, -5.0f);
+
+		Assert.assertEquals(0.5f, ranged, 1e-6f);
+		Assert.assertEquals(2 / 3.0f, ranged2, 1e-6f);
+		Assert.assertEquals(2 / 5.0f, ranged3, 1e-6f);
+		Assert.assertEquals(-7.5f, ranged4, 1e-6f);
+	}
+
+	@Test
+	public void testMapRangeDouble() {
+		double ranged = MathHelper.mapRange(12.5, 11.0, 14.0, 0.0, 1.0);
+		double ranged2 = MathHelper.mapRange(13.0, 11.0, 14.0, 0.0, 1.0);
+		double ranged3 = MathHelper.mapRange(-3.0, -5.0, 0.0, 0.0, 1.0);
+		double ranged4 = MathHelper.mapRange(12.5, 10.0, 15.0, -10.0, -5.0);
+
+		Assert.assertEquals(0.5, ranged, 1e-6);
+		Assert.assertEquals(2 / 3.0, ranged2, 1e-6);
+		Assert.assertEquals(2 / 5.0, ranged3, 1e-6);
+		Assert.assertEquals(-7.5, ranged4, 1e-6);
+	}
+
 }
