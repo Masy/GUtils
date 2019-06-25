@@ -3,13 +3,13 @@ package pw.masy.gutils.math;
 import java.text.NumberFormat;
 
 /**
- * Class representing a 3 dimensional vector storing doubles.
+ * Class representing a 3 dimensional vector storing floats.
  */
-public class Vec3d {
+public class Vec3f {
 
-	public double x;
-	public double y;
-	public double z;
+	public float x;
+	public float y;
+	public float z;
 
 	/**
 	 * Constructs a new 3 dimensional vector.
@@ -18,7 +18,7 @@ public class Vec3d {
 	 * @param y the y coordinate of the vector
 	 * @param z the z coordinate of the vector
 	 */
-	public Vec3d(double x, double y, double z) {
+	public Vec3f(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -29,23 +29,23 @@ public class Vec3d {
 	 *
 	 * @param value the value of the x, y and z coordinate of the vector
 	 */
-	public Vec3d(double value) {
+	public Vec3f(float value) {
 		this(value, value, value);
 	}
 
 	/**
 	 * Constructs a new 3 dimensional vector.
 	 */
-	public Vec3d() {
-		this(0.0);
+	public Vec3f() {
+		this(0.0f);
 	}
 
 	/**
 	 * Constructs a new 3 dimensional vector.
 	 *
-	 * @param other the {@link Vec3d} the coordinates will be copied from
+	 * @param other the {@link Vec3f} the coordinates will be copied from
 	 */
-	public Vec3d(Vec3d other) {
+	public Vec3f(Vec3f other) {
 		this.set(other);
 	}
 
@@ -54,7 +54,7 @@ public class Vec3d {
 	 *
 	 * @return the x coordinate of the vector
 	 */
-	public double getX() {
+	public float getX() {
 		return this.x;
 	}
 
@@ -63,7 +63,7 @@ public class Vec3d {
 	 *
 	 * @return the y coordinate of the vector
 	 */
-	public double getY() {
+	public float getY() {
 		return this.y;
 	}
 
@@ -72,7 +72,7 @@ public class Vec3d {
 	 *
 	 * @return the z coordinate of the vector
 	 */
-	public double getZ() {
+	public float getZ() {
 		return this.z;
 	}
 
@@ -82,7 +82,7 @@ public class Vec3d {
 	 * @param newX the new x coordinate of the vector
 	 * @return the instance of the 3 dimensional vector
 	 */
-	public Vec3d setX(double newX) {
+	public Vec3f setX(float newX) {
 		this.x = newX;
 		return this;
 	}
@@ -93,7 +93,7 @@ public class Vec3d {
 	 * @param newY the new y coordinate of the vector
 	 * @return the instance of the 3 dimensional vector
 	 */
-	public Vec3d setY(double newY) {
+	public Vec3f setY(float newY) {
 		this.y = newY;
 		return this;
 	}
@@ -104,7 +104,7 @@ public class Vec3d {
 	 * @param newZ the new z coordinate of the vector
 	 * @return the instance of the 3 dimensional vector
 	 */
-	public Vec3d setZ(double newZ) {
+	public Vec3f setZ(float newZ) {
 		this.z = newZ;
 		return this;
 	}
@@ -117,7 +117,7 @@ public class Vec3d {
 	 * @param newZ the new z coordinate of the vector
 	 * @return the instance of the 2 dimensional vector
 	 */
-	public Vec3d set(double newX, double newY, double newZ) {
+	public Vec3f set(float newX, float newY, float newZ) {
 		this.x = newX;
 		this.y = newY;
 		this.z = newZ;
@@ -130,17 +130,17 @@ public class Vec3d {
 	 * @param newValue the new value of the x, y and z coordinate of the vector
 	 * @return the instance of the 3 dimensional vector
 	 */
-	public Vec3d set(double newValue) {
+	public Vec3f set(float newValue) {
 		return this.set(newValue, newValue, newValue);
 	}
 
 	/**
 	 * Sets the x, y and z coordinate of the vector.
 	 *
-	 * @param other the {@link Vec3d} the coordinates will be copied from
+	 * @param other the {@link Vec3f} the coordinates will be copied from
 	 * @return the instance of the 3 dimensional vector
 	 */
-	public Vec3d set(Vec3d other) {
+	public Vec3f set(Vec3f other) {
 		return this.set(other.x, other.y, other.z);
 	}
 
@@ -155,10 +155,10 @@ public class Vec3d {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Vec3d))
+		if (!(obj instanceof Vec3f))
 			return false;
 
-		Vec3d other = (Vec3d) obj;
+		Vec3f other = (Vec3f) obj;
 
 		return other.x == this.x && other.y == this.y && other.z == this.z;
 	}
