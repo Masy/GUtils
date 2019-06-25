@@ -3,12 +3,12 @@ package pw.masy.gutils.math;
 import java.text.NumberFormat;
 
 /**
- * Class representing a 2 dimensional vector storing doubles.
+ * Class representing a 2 dimensional vector storing floats.
  */
-public class Vec2d {
+public class Vec2f {
 
-	public double x;
-	public double y;
+	public float x;
+	public float y;
 
 	/**
 	 * Constructs a new 2 dimensional vector.
@@ -16,7 +16,7 @@ public class Vec2d {
 	 * @param x the x coordinate of the vector
 	 * @param y the y coordinate of the vector
 	 */
-	public Vec2d(double x, double y) {
+	public Vec2f(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -26,23 +26,23 @@ public class Vec2d {
 	 *
 	 * @param value the value of the x and y coordinate of the vector
 	 */
-	public Vec2d(double value) {
+	public Vec2f(float value) {
 		this(value, value);
 	}
 
 	/**
 	 * Constructs a new 2 dimensional vector.
 	 */
-	public Vec2d() {
-		this(0.0);
+	public Vec2f() {
+		this(0.0f);
 	}
 
 	/**
 	 * Constructs a new 2 dimensional vector.
 	 *
-	 * @param other the {@link Vec2d} the coordinates will be copied from
+	 * @param other the {@link Vec2f} the coordinates will be copied from
 	 */
-	public Vec2d(Vec2d other) {
+	public Vec2f(Vec2f other) {
 		this.set(other);
 	}
 
@@ -51,7 +51,7 @@ public class Vec2d {
 	 *
 	 * @return the x coordinate of the vector
 	 */
-	public double getX() {
+	public float getX() {
 		return this.x;
 	}
 
@@ -60,7 +60,7 @@ public class Vec2d {
 	 *
 	 * @return the y coordinate of the vector
 	 */
-	public double getY() {
+	public float getY() {
 		return this.y;
 	}
 
@@ -70,7 +70,7 @@ public class Vec2d {
 	 * @param newX the new x coordinate of the vector
 	 * @return the instance of the 2 dimensional vector
 	 */
-	public Vec2d setX(double newX) {
+	public Vec2f setX(float newX) {
 		this.x = newX;
 		return this;
 	}
@@ -81,7 +81,7 @@ public class Vec2d {
 	 * @param newY the new y coordinate of the vector
 	 * @return the instance of the 2 dimensional vector
 	 */
-	public Vec2d setY(double newY) {
+	public Vec2f setY(float newY) {
 		this.y = newY;
 		return this;
 	}
@@ -93,7 +93,7 @@ public class Vec2d {
 	 * @param newY the new y coordinate of the vector
 	 * @return the instance of the 2 dimensional vector
 	 */
-	public Vec2d set(double newX, double newY) {
+	public Vec2f set(float newX, float newY) {
 		this.x = newX;
 		this.y = newY;
 		return this;
@@ -105,34 +105,34 @@ public class Vec2d {
 	 * @param newValue the new value of the x and y coordinate of the vector
 	 * @return the instance of the 2 dimensional vector
 	 */
-	public Vec2d set(double newValue) {
+	public Vec2f set(float newValue) {
 		return this.set(newValue, newValue);
 	}
 
 	/**
 	 * Sets the x and y coordinate of the vector.
 	 *
-	 * @param other the {@link Vec2d} the coordinates will be copied from
-	 * @return the instance of the 2 dimensional vector
+	 * @param other the {@link Vec2f} the coordinates will be copied from
+	 * @return teh instance of the 2 dimensional vector
 	 */
-	public Vec2d set(Vec2d other) {
+	public Vec2f set(Vec2f other) {
 		return this.set(other.x, other.y);
 	}
 
 	@Override
 	public int hashCode() {
 		int hash = 37;
-		hash *= this.x * 401;
-		hash *= this.y * 173;
+		hash *= this.x * 173;
+		hash *= this.y * 97;
 		return hash;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Vec2d))
+		if (!(obj instanceof Vec2f))
 			return false;
 
-		Vec2d other = (Vec2d) obj;
+		Vec2f other = (Vec2f) obj;
 
 		return other.x == this.x && other.y == this.y;
 	}
